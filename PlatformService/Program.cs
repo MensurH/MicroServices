@@ -15,10 +15,11 @@ builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 
 builder.Services.AddAutoMapper(typeof(Platform));
 
-var connectionString = builder.Configuration.GetConnectionString("MyWebApiConection");
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString));
+//var connectionString = builder.Configuration.GetConnectionString("MyWebApiConection");
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseNpgsql(connectionString));
 
+builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
 
 
 var app = builder.Build();
