@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using PlatformService.Data;
 using PlatformService.Models;
+using PlatformService.SyncDataServices.Http;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -19,10 +20,17 @@ builder.Services.AddAutoMapper(typeof(Platform));
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseNpgsql(connectionString));
 
+
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
+
+builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
+
+Console.WriteLine($"Command Service EndPoint :{builder.Configuration["CommandService"]}");
 
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -31,7 +39,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+
+
+//Console.WriteLine("Command Service EndPoint :");
+
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
